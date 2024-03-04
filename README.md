@@ -56,31 +56,3 @@ This module requires following external modules
 
 
 
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Ufuk Onder - ufuk.onder@gmail.com
-
-Project Link: (https://github.com/u-onder/mtf.py)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-* [Optical Transfer Function](https://en.wikipedia.org/wiki/Optical_transfer_function)
-* [How to Measure Modulation Transfer Function](https://harvestimaging.com/blog/?p=1328)
-* [Comparison of MTF Measurements Using Edge Method](https://hal.archives-ouvertes.fr/hal-02055611/document)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
