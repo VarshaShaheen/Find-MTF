@@ -9,6 +9,7 @@ from scipy import interpolate
 from scipy.fft import fft
 from enum import Enum
 from dataclasses import dataclass
+import os
 
 
 @dataclass
@@ -309,7 +310,7 @@ class MTF:
         return cMTF(interpDistances, interpValues, valueAtNyquist, -1.0)
 
     @staticmethod
-    def CalculateMtf(imgArr, verbose=Verbosity.NONE):
+    def CalculateMtf(imgArr,plot_save_path,  verbose=Verbosity.NONE):
         global x, y
         imgArr = Helper.CorrectImageOrientation(imgArr)
         esf = MTF.GetEdgeSpreadFunctionCrop(imgArr, Verbosity.NONE)
@@ -347,9 +348,12 @@ class MTF:
             ax3.yaxis.set_visible(False)
             ax4.plot(mtf.x, mtf.y)
             ax4.set_title("MTF at Nyquist:{0:0.2f}\nTransition Width:{1:0.2f}".format(mtf.mtfAtNyquist, esf.width))
+            print(mtf.mtfAtNyquist)
             ax4.grid(True)
 
+            plt.savefig(plot_save_path)  # Save the plot before displaying it
             plt.show(block=False)
             plt.show()
+            plt.close()
 
-        return cMTF(x, y, mtf.mtfAtNyquist, esf.width)
+            return cMTF(x, y, mtf.mtfAtNyquist, esf.width)
