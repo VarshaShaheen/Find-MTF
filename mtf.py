@@ -95,7 +95,7 @@ class Helper:
 
 
 class MTF:
-    nyquistFrequency = 0.5
+    nyquistFrequency = 0.25
 
     @staticmethod
     def SafeCrop(values, distances, head, tail):
@@ -173,7 +173,7 @@ class MTF:
     @staticmethod
     def GetEdgeSpreadFunctionCrop(imgArr, verbose=Verbosity.NONE):
         imgArr = Helper.CorrectImageOrientation(imgArr)
-        edgeImg = cv2.Canny(np.uint8(imgArr * 255), 40, 90, L2gradient=True)
+        edgeImg = cv2.Canny(np.uint8(imgArr * 255), 30, 60, L2gradient=True)
 
         line = np.argwhere(edgeImg == 255)
         edgePoly = np.polyfit(line[:, 1], line[:, 0], 1)
@@ -300,7 +300,7 @@ class MTF:
 
         elif verbose == Verbosity.DETAIL:
             fig = pylab.gcf()
-            fig.canvas.manager.set_window_title("MTF ({0:2.2f}% at Nyquist)".format(valueAtNyquist))
+            fig.canvas.manager.set_window_title("MTF ({0:2.2f}% at 0.25)".format(valueAtNyquist))
             (ax1) = plt.subplots(1)
             ax1.plot(interpDistances, interpValues)
             # ax1.plot( values)
@@ -318,7 +318,7 @@ class MTF:
         mtf = MTF.GetMTF(lsf, Verbosity.NONE)
 
         if verbose == Verbosity.BRIEF:
-            print("MTF at Nyquist:{0:0.2f}%, Transition Width:{1:0.2f}".format(mtf.mtfAtNyquist, esf.width))
+            print("MTF at 0.25:{0:0.2f}%, Transition Width:{1:0.2f}".format(mtf.mtfAtNyquist, esf.width))
 
         elif verbose == Verbosity.DETAIL:
             x = [0, np.size(imgArr, 1) - 1]
@@ -347,13 +347,12 @@ class MTF:
             ax3.xaxis.set_visible(False)
             ax3.yaxis.set_visible(False)
             ax4.plot(mtf.x, mtf.y)
-            ax4.set_title("MTF at Nyquist:{0:0.2f}\nTransition Width:{1:0.2f}".format(mtf.mtfAtNyquist, esf.width))
+            ax4.set_title("MTF at 0.25:{0:0.8f}\nTransition Width:{1:0.8f}".format(mtf.mtfAtNyquist, esf.width))
             print(mtf.mtfAtNyquist)
             ax4.grid(True)
 
             plt.savefig(plot_save_path)  # Save the plot before displaying it
             plt.show(block=False)
-            plt.show()
             plt.close()
 
             return cMTF(x, y, mtf.mtfAtNyquist, esf.width)

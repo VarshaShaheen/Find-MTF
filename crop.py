@@ -32,7 +32,7 @@ def crop_images_in_folder(source_folder, target_folder, top_left, bottom_right):
     # List all files in the source folder
     files = os.listdir(source_folder)
 
-    # Loop through each file and crop it
+    # Loop through each file and cropped_man it
     for i, filename in enumerate(files, start=1):
         # Construct full file path
         file_path = os.path.join(source_folder, filename)
@@ -43,11 +43,11 @@ def crop_images_in_folder(source_folder, target_folder, top_left, bottom_right):
 
 
 # Specify source and target folders
-source_folder = 'focus-chettan/5'
-target_folder = 'crop/5'
+source_folder = 'exp_1_focus/data_set/blurred/varsha/9'
+target_folder = 'exp_1_focus/data_set/cropped/blur/varsha/9'
 # Specify the top-left and bottom-right coordinates for cropping
-top_left = (1980, 1310)  # (x1, y1)
-bottom_right = (2280, 1440)  # (x2, y2)
+top_left = (1900, 1380)  # (x1, y1)
+bottom_right = (2220, 1540)  # (x2, y2)
 
 # Crop all images in the folder
 crop_images_in_folder(source_folder, target_folder, top_left, bottom_right)

@@ -26,6 +26,6 @@ def calculate_and_save_mtf_for_all_images(source_folder, target_folder):
 
 
 # Example usage
-source_folder = 'crop/5'
-target_folder = 'mtf_data/5'
+source_folder = 'exp_1_focus/data_set/cropped/cropped_varsha/5'
+target_folder = 'exp_1_focus/mtf/mtf_data_varsha/5'
 calculate_and_save_mtf_for_all_images(source_folder, target_folder)
