@@ -1,52 +1,67 @@
 import cv2
+import numpy as np
 import os
+import re
 
 
-def gaussian_blur_images(input_directory, output_directory, blur_intensity=21, passes=3):
-    """
-    Apply Gaussian blur multiple times to all images in the specified directory and save them with new filenames.
+def scale_high_frequencies(channel):
+    dft = np.fft.fft2(channel)
+    dft_shift = np.fft.fftshift(dft)
+    rows, cols = channel.shape
+    crow, ccol = rows // 2, cols // 2
 
-    Parameters:
-    - input_directory: Path to the directory containing the original images.
-    - output_directory: Path to the directory where blurred images will be saved.
-    - blur_intensity: The intensity of the Gaussian blur (kernel size) for each pass. Must be an odd number.
-    - passes: The number of times the Gaussian blur is applied.
-    """
-    # Ensure the blur intensity is odd
-    if blur_intensity % 2 == 0:
-        raise ValueError("Blur intensity must be an odd number.")
+    # Scale frequencies based on their distance from the center
+    mask = np.zeros((rows, cols), np.float32)
+    for x in range(rows):
+        for y in range(cols):
+            distance = np.sqrt((x - crow) ** 2 + (y - ccol) ** 2)
+            mask[x, y] = np.exp(-4 * distance / (rows / 4))  # Adjusted for more blur
 
-    # Create the output directory if it doesn't exist
-    if not os.path.exists(output_directory):
-        os.makedirs(output_directory)
+    fshift = dft_shift * mask
+    f_ishift = np.fft.ifftshift(fshift)
+    img_back = np.fft.ifft2(f_ishift)
+    img_back = np.abs(img_back)
 
-    # List all files in the input directory
-    files = os.listdir(input_directory)
-    image_counter = 1  # Counter for naming the output images
-
-    for file in files:
-        # Construct the full file path
-        file_path = os.path.join(input_directory, file)
-
-        # Check if the file is an image
-        if os.path.isfile(file_path) and file.lower().endswith(('.png', '.jpg', '.jpeg')):
-            # Load the image
-            image = cv2.imread(file_path)
-
-            # Apply Gaussian blur multiple times
-            blurred_image = image
-            for _ in range(passes):
-                blurred_image = cv2.GaussianBlur(blurred_image, (blur_intensity, blur_intensity), 0)
-
-            # Save the blurred image
-            output_file_path = os.path.join(output_directory, f"{image_counter}.jpg")
-            cv2.imwrite(output_file_path, blurred_image)
-
-            print(f"Processed {file} -> {output_file_path}")
-            image_counter += 1
+    return img_back
 
 
-if __name__ == "__main__":
-    input_dir = "exp_1_focus/data_set/blurred/varsha/8"  # Update this path
-    output_dir = "exp_1_focus/data_set/blurred/varsha/9"  # Update this path
-    gaussian_blur_images(input_dir, output_dir, blur_intensity=21, passes=3)
+def process_image_color(image):
+    # Split the image into its color channels
+    channels = cv2.split(image)
+    processed_channels = []
+
+    for channel in channels:
+        processed_channel = scale_high_frequencies(channel)
+        processed_channels.append(processed_channel)
+
+    # Merge the processed channels back into a color image
+    processed_image = cv2.merge(processed_channels)
+    return processed_image
+
+
+def extract_number(filename):
+    s = re.findall(r"\d+", filename)
+    return (int(s[0]) if s else -1, filename)
+
+
+def process_images_in_folder(input_folder, output_folder):
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    files = [f for f in os.listdir(input_folder) if f.endswith(('.png', '.jpg', '.jpeg'))]
+    files.sort(key=extract_number)  # Sort files based on numeric order
+
+    for i, file in enumerate(files, start=1):
+        file_path = os.path.join(input_folder, file)
+        image = cv2.imread(file_path)  # Read in color
+        if image is None:
+            print(f"Skipping file {file}, as it's not a valid image.")
+            continue
+
+        processed_image = process_image_color(image)
+
+
+# Example usage
+input_folder = 'exp_2_lens/blur/2'
+output_folder = 'exp_2_lens/blur/3'
+process_images_in_folder(input_folder, output_folder)

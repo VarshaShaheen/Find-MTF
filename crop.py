@@ -1,5 +1,6 @@
 import os
 from PIL import Image
+import cv2
 
 
 def crop_square(image_path, output_path, top_left, bottom_right):
@@ -43,11 +44,9 @@ def crop_images_in_folder(source_folder, target_folder, top_left, bottom_right):
 
 
 # Specify source and target folders
-source_folder = 'exp_1_focus/data_set/blurred/varsha/9'
-target_folder = 'exp_1_focus/data_set/cropped/blur/varsha/9'
-# Specify the top-left and bottom-right coordinates for cropping
-top_left = (1900, 1380)  # (x1, y1)
-bottom_right = (2220, 1540)  # (x2, y2)
-
+source_folder = 'exp_3_distance/env2/3'
+target_folder = 'exp_3_distance/cropped/3'
+top_left = (2215, 1400)
+bottom_right = (2280, 1490)
 # Crop all images in the folder
 crop_images_in_folder(source_folder, target_folder, top_left, bottom_right)

@@ -3,6 +3,7 @@ import pylab as pylab
 import numpy as np
 import cv2 as cv2
 import math as math
+from scipy.optimize import brentq
 
 from PIL import Image, ImageOps
 from scipy import interpolate
@@ -173,7 +174,7 @@ class MTF:
     @staticmethod
     def GetEdgeSpreadFunctionCrop(imgArr, verbose=Verbosity.NONE):
         imgArr = Helper.CorrectImageOrientation(imgArr)
-        edgeImg = cv2.Canny(np.uint8(imgArr * 255), 30, 60, L2gradient=True)
+        edgeImg = cv2.Canny(np.uint8(imgArr * 255), 30, 90, L2gradient=True)
 
         line = np.argwhere(edgeImg == 255)
         edgePoly = np.polyfit(line[:, 1], line[:, 0], 1)
@@ -310,7 +311,7 @@ class MTF:
         return cMTF(interpDistances, interpValues, valueAtNyquist, -1.0)
 
     @staticmethod
-    def CalculateMtf(imgArr,plot_save_path,  verbose=Verbosity.NONE):
+    def CalculateMtf(imgArr, plot_save_path, verbose=Verbosity.NONE):
         global x, y
         imgArr = Helper.CorrectImageOrientation(imgArr)
         esf = MTF.GetEdgeSpreadFunctionCrop(imgArr, Verbosity.NONE)
@@ -348,7 +349,13 @@ class MTF:
             ax3.yaxis.set_visible(False)
             ax4.plot(mtf.x, mtf.y)
             ax4.set_title("MTF at 0.25:{0:0.8f}\nTransition Width:{1:0.8f}".format(mtf.mtfAtNyquist, esf.width))
-            print(mtf.mtfAtNyquist)
+            index = next((i for i, value in enumerate(mtf.y) if value <= 0.3), None)
+
+            if index is not None:
+                frequency_at_mtf_0_3 = mtf.x[index]
+                print(frequency_at_mtf_0_3)
+            else:
+                print("MTF does not reach 0.3 within the measured frequencies.")
             ax4.grid(True)
 
             plt.savefig(plot_save_path)  # Save the plot before displaying it
