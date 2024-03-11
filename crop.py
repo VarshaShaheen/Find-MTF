@@ -44,9 +44,9 @@ def crop_images_in_folder(source_folder, target_folder, top_left, bottom_right):
 
 
 # Specify source and target folders
-source_folder = 'exp_3_distance/env2/3'
-target_folder = 'exp_3_distance/cropped/3'
+source_folder = 'exp_3_distance/env2/blur/3'
+target_folder = 'exp_3_distance/cropped/3.3'
 top_left = (2215, 1400)
-bottom_right = (2280, 1490)
+bottom_right = (2275, 1480)
 # Crop all images in the folder
 crop_images_in_folder(source_folder, target_folder, top_left, bottom_right)

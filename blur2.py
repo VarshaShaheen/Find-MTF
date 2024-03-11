@@ -30,6 +30,6 @@ def gaussian_blur_images(input_folder, output_folder, blur_value=(21, 21)):
 
 
 if __name__ == '__main__':
-    input_folder_path = 'exp_2_lens/blur/4'
-    output_folder_path = 'exp_2_lens/blur/5'
+    input_folder_path = 'exp_2_lens/blur/7'
+    output_folder_path = 'exp_2_lens/blur/8'
     gaussian_blur_images(input_folder_path, output_folder_path)

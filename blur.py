@@ -51,7 +51,7 @@ def process_images_in_folder(input_folder, output_folder):
     files = [f for f in os.listdir(input_folder) if f.endswith(('.png', '.jpg', '.jpeg'))]
     files.sort(key=extract_number)  # Sort files based on numeric order
 
-    for i, file in enumerate(files, start=1):
+    for file in files:
         file_path = os.path.join(input_folder, file)
         image = cv2.imread(file_path)  # Read in color
         if image is None:
@@ -60,8 +60,13 @@ def process_images_in_folder(input_folder, output_folder):
 
         processed_image = process_image_color(image)
 
+        # Save the processed image to the output folder
+        output_path = os.path.join(output_folder, file)
+        cv2.imwrite(output_path, processed_image)
+        print(f"Processed and saved: {output_path}")
+
 
 # Example usage
-input_folder = 'exp_2_lens/blur/2'
-output_folder = 'exp_2_lens/blur/3'
+input_folder = 'exp_3_distance/env2/5'
+output_folder = 'exp_3_distance/env2/blur/5.5'
 process_images_in_folder(input_folder, output_folder)

@@ -174,7 +174,7 @@ class MTF:
     @staticmethod
     def GetEdgeSpreadFunctionCrop(imgArr, verbose=Verbosity.NONE):
         imgArr = Helper.CorrectImageOrientation(imgArr)
-        edgeImg = cv2.Canny(np.uint8(imgArr * 255), 30, 90, L2gradient=True)
+        edgeImg = cv2.Canny(np.uint8(imgArr * 255), 10, 50, L2gradient=True)
 
         line = np.argwhere(edgeImg == 255)
         edgePoly = np.polyfit(line[:, 1], line[:, 0], 1)

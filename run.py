@@ -26,6 +26,6 @@ def calculate_and_save_mtf_for_all_images(source_folder, target_folder):
 
 
 # Example usage
-source_folder = 'exp_3_distance/cropped/3'
-target_folder = 'exp_3_distance/mtf/env_2/3'
+source_folder = 'exp_3_distance/cropped/3.3'
+target_folder = 'exp_3_distance/mtf/env_2/3.3'
 calculate_and_save_mtf_for_all_images(source_folder, target_folder)

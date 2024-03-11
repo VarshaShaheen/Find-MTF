@@ -23,10 +23,10 @@ def draw_rectangle_and_save(image_path, output_folder, top_left, bottom_right, c
 
 
 # Example usage
-image_path = 'exp_3_distance/env2/3/20240306_163835.jpg'  # Update this path to your image file
+image_path = 'exp_3_distance/env2/blur/3/20240306_163835.jpg'  # Update this path to your image file
 output_folder = 'temp'  # Update this path to your desired output folder
 top_left = (2215, 1400)
-bottom_right = (2280, 1490)
+bottom_right = (2275, 1480)
 
 # Call the function with the example parameters
 draw_rectangle_and_save(image_path, output_folder, top_left, bottom_right)
